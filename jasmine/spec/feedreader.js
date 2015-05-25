@@ -105,10 +105,11 @@ $(function() {
         });
 
         it('and there is at least one .entry within the .feed', function() {
+            var feeds = $('.feed');
             // ensure .feed exist
-            expect($('.feed').length === 0).not.toBe(true);
+            expect(feeds.length === 0).not.toBe(true);
             // there is at least an entry under feed
-            expect($.contains($('.feed')[0], $('.entry-link')[0])).toBe(true);
+            expect($.contains(feeds[0], $('.entry-link')[0])).toBe(true);
             // there is at least one .entry
             expect($('.entry').length === 0).not.toBe(true);
         });
@@ -162,4 +163,5 @@ $(function() {
             });
         });
     });
+
 }());
