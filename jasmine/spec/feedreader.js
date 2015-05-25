@@ -82,19 +82,84 @@ $(function() {
         });
     });
 
-    /* TODO: Write a new test suite named "Initial Entries" */
+    /* a new test suite named "Initial Entries" */
+    describe('Initial Entries', function () {
 
-        /* TODO: Write a test that ensures when the loadFeed
+
+        /* a test that ensures when the loadFeed
          * function is called and completes its work, there is at least
          * a single .entry element within the .feed container.
          * Remember, loadFeed() is asynchronous so this test wil require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
 
-    /* TODO: Write a new test suite named "New Feed Selection"
+        beforeEach(function(done){
+            // spy will still track all calls to loadFeed
+            spyOn(window, 'loadFeed').and.callThrough();
+            // and pass done as callback to loadFeed
+            loadFeed(0, done);
+        });
 
-        /* TODO: Write a test that ensures when a new feed is loaded
+        it('the loadFeed function is called', function() {
+            expect(window.loadFeed).toHaveBeenCalled();
+        });
+
+        it('and there is at least one .entry within the .feed', function() {
+            // ensure .feed exist
+            expect($('.feed').length === 0).not.toBe(true);
+            // there is at least an entry under feed
+            expect($.contains($('.feed')[0], $('.entry-link')[0])).toBe(true);
+            // there is at least one .entry
+            expect($('.entry').length === 0).not.toBe(true);
+        });
+    });
+
+    /* a new test suite named "New Feed Selection" */
+    describe('New Feed Selection', function () {
+
+        /* a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+
+        var self = this;
+        self.udacityBlogFeeds = '';
+        self.cssTrickFeeds = '';
+
+        beforeEach(function(done) {
+            spyOn(window, 'loadFeed').and.callThrough();
+            // This time is loads the feeds from Udacity blog
+            loadFeed(0, done);
+        });
+
+        it('loadFeed(0) has been called and feeds are loaded', function() {
+            expect(window.loadFeed).toHaveBeenCalledWith(0, jasmine.any(Function));
+            // store the feeds to udacityBlogFeeds
+            self.udacityBlogFeeds = $('.feed').html();
+            // and it is not empty
+            expect(self.udacityBlogFeeds).not.toBe('');
+        });
+
+        // now we load another feed
+        describe('Another new feed', function() {
+
+            beforeEach(function (done) {
+                // This time is loads the feeds from CSS Tricks
+                loadFeed(1, done);
+            });
+
+            it('is loaded', function() {
+                expect(window.loadFeed).toHaveBeenCalledWith(1, jasmine.any(Function));
+                // store the feeds to cssTrickFeeds
+                self.cssTrickFeeds = $('.feed').html();
+                // and it is not empty
+                expect(self.cssTrickFeeds).not.toBe('');
+
+            });
+
+            it('and is different from the first one', function () {
+                expect(self.udacityBlogFeeds).not.toEqual(self.cssTrickFeeds);
+            });
+        });
+    });
 }());
