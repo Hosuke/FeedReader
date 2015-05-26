@@ -47,7 +47,7 @@ $(function() {
             allFeeds.forEach(function (feed) {
                 expect(feed.name).toBeDefined();
                 expect(feed.name).not.toBe('');
-            })
+            });
         });
     });
 
@@ -71,8 +71,6 @@ $(function() {
           * clicked and does it hide when clicked again.
           */
         it('and it toggles visibility when the icon is clicked', function () {
-            // make sure it hides initially
-            expect(body.hasClass('menu-hidden')).toBe(true);
             // first click shows the menu
             icon.trigger('click');
             expect(body.hasClass('menu-hidden')).not.toBe(true);
@@ -105,13 +103,8 @@ $(function() {
         });
 
         it('and there is at least one .entry within the .feed', function() {
-            var feeds = $('.feed');
-            // ensure .feed exist
-            expect(feeds.length === 0).not.toBe(true);
-            // there is at least an entry under feed
-            expect($.contains(feeds[0], $('.entry-link')[0])).toBe(true);
             // there is at least one .entry
-            expect($('.entry').length === 0).not.toBe(true);
+            expect($('.feed .entry').length === 0).not.toBe(true);
         });
     });
 
